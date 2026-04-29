@@ -1,0 +1,2148 @@
+﻿@import "tailwindcss";
+
+/* Utilise Bayon pour les titres et Rubik (light) pour le corps via next/font variables
+  Les variables --font-bayon et --font-rubik sont injectÃ©es par `next/font/google` dans `app/layout.tsx`.
+  On fournit des fallbacks robustes si les variables ne sont pas prÃ©sentes. */
+
+:root {
+  /* variables centrales de la charte */
+  /* Ajustement des couleurs : brand = couleur principale pour Ã©lÃ©ments marquants
+     Accent = couleur secondaire (CTA). Vous pouvez modifier ces valeurs pour
+     coller prÃ©cisÃ©ment Ã  la charte. */
+  --brand: #6B2EA6;          /* couleur principale (ex: violet riche) */
+  --accent: #AF6F56;         /* couleur secondaire / CTA (chaleureuse) */
+  --bg-cream: #F0E5C9;       /* fond clair */
+  --bg-dark: #0b1220;        /* fond sombre */
+  --text-dark: #222222;      /* texte sombre */
+  --text-light: #ffffff;     /* texte clair */
+  --live: #00ff85;           /* indicateur live */
+
+  /* police par dÃ©faut : utilise variables crÃ©Ã©es par next/font si disponibles, sinon fallback */
+  --font-body: var(--font-rubik, 'Rubik', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif);
+  --font-head: var(--font-bayon, 'Bayon', var(--font-rubik, 'Rubik'), system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif);
+  /* tailles du logo : rÃ©duites pour Ã©viter chevauchement */
+  --logo-height: 48px;       /* hauteur du logo dans l'en-tÃªte (desktop) */
+  --logo-large-height: 72px; /* hauteur max pour `logogros` (menu mobile) */
+  /* largeur du panneau menu mobile (utilisÃ©e pour calculer la place du logo) */
+  --menu-width: 220px;
+  /* header accent to visually separate the header from the page */
+  --header-accent: rgba(107,46,166,0.06);
+  /* couleur d'arriÃ¨re-plan utilisÃ©e globalement (par dÃ©faut : crÃ¨me) */
+  --color-background: var(--bg-cream);
+  --color-foreground: var(--text-dark);
+  /* background grid removed â€” kept no-op variables removed on user request */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: var(--bg-dark);
+    --color-foreground: var(--text-light);
+  }
+}
+
+body {
+  background-color: var(--color-background);
+  /* background grid removed on user request */
+  color: var(--color-foreground);
+  font-family: var(--font-body);
+}
+
+/* --------------------------------------------------------------------------
+   Force le thÃ¨me dÃ©fini par la charte indÃ©pendamment de la prÃ©fÃ©rence systÃ¨me
+   (pratique si vous voulez un rendu identique en dev et en prod)          
+   Pour revenir au comportement 'prefers-color-scheme', supprimez ce bloc.  
+---------------------------------------------------------------------------- */
+:root {
+  --color-background: var(--bg-cream);
+  --color-foreground: var(--text-dark);
+}
+
+/* Titres : appliquer la police de la charte pour les headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-head);
+}
+
+/* Global centered container to control page width */
+.container {
+  max-width: 1200px; /* limite lÃ©gÃ¨rement pour ressembler au site */
+  margin: 0 auto;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+footer {
+  background: var(--brand);
+  color: var(--text-light);
+}
+
+/* Small rounded ribbon style for footer when used as centered label */
+.footerRibbon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 1.25rem;
+  /* pill shape */
+  border-radius: 9999px;
+  margin: 0.75rem auto;
+  box-shadow: 0 6px 18px color-mix(in srgb, rgba(0,0,0,0.08) 60%, transparent 40%);
+  max-width: calc(100% - 3rem);
+  width: auto;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+header {
+  /* warmer horizontal gradient matching the original site header */
+  background: linear-gradient(90deg, rgba(243,231,203,1) 0%, rgba(255,250,240,0.95) 60%);
+  color: var(--brand);
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+  backdrop-filter: blur(3px) saturate(105%);
+}
+
+/* make the small header band visually separated from the page */
+.header-band {
+  height: 0.5rem;
+  background: linear-gradient(90deg, rgba(107,46,166,0.12), rgba(175,111,86,0.06));
+}
+
+
+#contenu-apropos h2,
+#contenu-apropos h3,
+#contenu-apropos p,
+#contenu-apropos a {
+  color: var(--text-light);
+}
+
+#contenu-apropos {
+  background: var(--brand);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.live-player {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  font-family: var(--font-body);
+}
+
+/* Hero title style for dashboard landing */
+.hero-title {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(2rem, 4.4vw, 3.6rem);
+  line-height: 1.02;
+  margin: 0 0 1rem 0;
+  color: var(--color-foreground);
+}
+
+/* Panel utility to match site: white card with generous padding and soft shadow */
+.panel {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 12px 30px rgba(15,23,42,0.06);
+}
+
+/* Full-bleed panel used on dashboard to occupy the entire width of the viewport
+   Compensates for the page horizontal padding (px-4 on main). Adjust values if you change main padding. */
+.panel-bleed {
+  width: calc(100% + 2rem);
+  margin-left: -1rem;
+  margin-right: -1rem;
+  border-radius: 12px; /* keep rounded corners */
+  box-shadow: 0 12px 30px rgba(15,23,42,0.06);
+}
+
+/* Ensure h1 inside panel uses the hero style */
+.panel h1, .panel .hero-title {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(2rem, 4.4vw, 3.6rem);
+  line-height: 1.02;
+  margin: 0 0 1rem 0;
+  color: var(--color-foreground);
+}
+
+/* Footer ribbon centered */
+.footer-ribbon-centered {
+  max-width: 1200px;
+  margin: 2rem auto 0 auto;
+  padding: 0.75rem 1rem;
+  background: var(--brand);
+  color: var(--text-light);
+  text-align: center;
+}
+
+/* Music list toolbar */
+.music-toolbar {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+.music-toolbar .left {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.music-toolbar .right {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* Table polish: readable rows, sticky header, better spacing */
+.music-table-wrapper {
+  width: 100%;
+  overflow: auto;
+  border-radius: 8px;
+}
+.music-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+/* Use fixed table layout so column widths are respected and long cells don't push row height.
+   Exclude the first column (checkbox + badge) from clipping so badges remain visible. */
+.music-table {
+  table-layout: fixed;
+}
+.music-table thead th:not(:first-child),
+.music-table tbody td:not(:first-child) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* First column (checkbox + badge) should allow visible overflow so badges aren't clipped */
+.music-table thead th:first-child,
+.music-table tbody td:first-child {
+  overflow: visible;
+  white-space: nowrap;
+  width: 72px; /* enough room for checkbox + badge (increased to avoid clipping) */
+  min-width: 72px;
+  padding-left: 12px;
+  position: relative; /* allow absolute positioning inside if needed */
+}
+.music-table thead th {
+  position: sticky;
+  top: 0;
+  background: rgba(250,250,250,0.95);
+  z-index: 2;
+  padding: 0.75rem 0.75rem;
+  text-align: left;
+  font-weight: 700;
+  color: rgba(34,34,34,0.9);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.music-table tbody td {
+  padding: 0.9rem 0.75rem;
+  vertical-align: top;
+  color: rgba(34,34,34,0.85);
+  border-bottom: 1px solid rgba(0,0,0,0.03);
+}
+.music-table tbody tr:nth-child(odd) {
+  background: #fff;
+}
+.music-table tbody tr:nth-child(even) {
+  background: #faf9fb;
+}
+
+/* Keep the actions column visible: sticky to the right and above other cells when scrolled */
+.music-table th:last-child,
+.music-table td:last-child {
+  position: sticky;
+  right: 0;
+  z-index: 4;
+  background: linear-gradient(90deg, rgba(255,255,255,0.98), rgba(255,255,255,0.9));
+  /* ensure the cell stays compact */
+  white-space: nowrap;
+}
+
+/* Make action buttons sit on top and not wrap on desktop */
+.actions-group { position: relative; z-index: 5; }
+
+/* On small screens allow content to wrap naturally for readability */
+@media (max-width: 640px) {
+  .music-table thead th,
+  .music-table tbody td { white-space: normal; }
+  .music-table { table-layout: auto; }
+  .music-table th:last-child,
+  .music-table td:last-child { position: static; }
+  .actions-group { flex-wrap: wrap; }
+}
+
+/* On desktop hide the actions column in the table to avoid duplication with the Uploader sidebar
+   The sidebar provides the canonical action controls when enough space is available. */
+@media (min-width: 900px) {
+  .music-table th:last-child,
+  .music-table td:last-child {
+    display: none;
+  }
+
+  /* Keep the uploader sidebar visible while scrolling */
+  .grid > aside.panel {
+    position: sticky;
+    top: 1.25rem;
+    align-self: start; /* ensure it doesn't stretch vertically */
+  }
+}
+
+/* Uploader sidebar: prevent action buttons from overflowing the panel */
+.uploader-actions { display: flex; flex-direction: column; gap: 0.5rem; }
+.uploader-actions .uploader-actions-row { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+.uploader-actions .btn-outline-fluff,
+.uploader-actions .btn-fluff,
+.uploader-actions label.btn-outline-fluff {
+  max-width: 100%;
+  box-sizing: border-box;
+  white-space: nowrap; /* keep button text on one line, but allow wrapping of buttons themselves */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.uploader-actions label { display: inline-flex; align-items: center; }
+
+/* Allow the replace label to shrink to multiple lines if needed on very narrow screens */
+@media (max-width: 520px) {
+  .uploader-actions .btn-outline-fluff,
+  .uploader-actions .btn-fluff { white-space: normal; }
+}
+
+/* badge showing selection order: fixed-size circle so the number is perfectly centered */
+.order-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px; /* fixed circle size for consistent centering */
+  height: 24px;
+  line-height: 24px; /* ensure vertical centering on older browsers */
+  padding: 0; /* no horizontal padding so digits remain centered */
+  border-radius: 999px;
+  background: var(--brand);
+  color: var(--text-light);
+  font-size: 0.75rem;
+  font-weight: 700;
+  box-sizing: border-box;
+}
+
+/* Visual improvements for selection */
+.music-table td > label { display: inline-flex; align-items: center; gap: 8px; overflow: visible; position: relative; }
+.music-table input[type="checkbox"] { width: 18px; height: 18px; flex: 0 0 auto; }
+
+/* position the badge absolutely to the right of the checkbox to avoid native control overlap */
+.music-table .order-badge {
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  font-size: 0.78rem;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+  position: absolute;
+  left: 36px; /* sits to the right of the 18px checkbox + small gap */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 40; /* ensure it's above form control visuals */
+}
+.music-table tbody tr.row-selected {
+  background: color-mix(in srgb, var(--brand) 4%, transparent 96%);
+}
+.music-table tbody tr.row-selected td { color: rgba(0,0,0,0.85); }
+.music-table tbody tr.row-selected .order-badge { background: linear-gradient(90deg, var(--brand), var(--accent)); }
+
+/* make badge sit close to the checkbox without pushing layout */
+.music-table td .order-badge { margin-left: 0; }
+
+
+/* Action buttons group */
+.actions-group { display:flex; gap:0.5rem; flex-wrap:wrap; justify-content:flex-end; }
+.actions-group .btn-outline-fluff { padding:0.35rem 0.6rem; border-radius:8px; }
+
+/* Ensure actions column stays compact on desktop and aligned to the right */
+.music-table th:last-child,
+.music-table td:last-child {
+  text-align: right;
+  width: 220px; /* matches inline width in JSX */
+  white-space: nowrap;
+}
+
+/* Prevent action buttons from wrapping on desktop; allow wrapping on small screens */
+@media (min-width: 900px) {
+  .actions-group { flex-wrap: nowrap; }
+}
+
+@media (max-width: 900px) {
+  .music-toolbar { flex-direction: column; align-items: stretch; gap: 0.5rem; }
+}
+
+/* Onglets */
+.live-player .tabs {
+  display: flex;
+  border-bottom: 1px solid #e5e7eb; /* gris clair */
+  gap: 0;
+  margin-bottom: 1rem;
+}
+
+.live-player .tab-btn {
+  flex: 1;
+  padding: 0.6rem 0;
+  font-weight: 600;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: color-mix(in srgb, var(--color-foreground) 68%, white 32%);
+  cursor: pointer;
+  transition: color .15s ease, border-color .15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.live-player .tab-btn:focus {
+  outline: none;
+}
+
+.live-player .tab-btn.active.twitch {
+  color: #2563eb; /* left as platform colors */
+  border-bottom-color: #2563eb;
+}
+
+.live-player .tab-btn.active.tiktok {
+  color: #ec4899;
+  border-bottom-color: #ec4899;
+}
+
+/* Conteneur responsive vidÃ©o (16:9) */
+.live-player .player-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 */
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+  background: #000;
+}
+
+.live-player .tab-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+}
+
+/* iframe / embed plein conteneur */
+.live-player .player-wrap iframe,
+.live-player .player-wrap .iframely-embed,
+.live-player .player-wrap .tiktok-embed,
+.live-player .player-wrap blockquote.tiktok-embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+.live-player blockquote.tiktok-embed {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
+.live-player blockquote.tiktok-embed section a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (max-width: 420px) {
+  .live-player {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  .live-player .player-wrap {
+    border-radius: 8px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.06);
+  }
+}
+
+h2, h3, p , a {
+  color: var(--color-foreground);
+}
+
+/* Small helper utility classes to apply brand colors where Tailwind arbitrary values are used */
+.btn-brand {
+  background: var(--brand) !important;
+  color: var(--text-light) !important;
+}
+.btn-brand:hover { background: color-mix(in srgb, var(--brand) 88%, black 12%) !important; }
+.text-brand { color: var(--brand) !important; }
+.bg-brand { background: var(--brand) !important; }
+.btn-gradient-vr { background: linear-gradient(90deg, var(--brand), var(--accent)) !important; color: var(--text-light) !important; }
+
+.menu-open .top-logo {
+  visibility: hidden;
+}
+
+/* Global helper for the small header logo (plain class "top-logo" used in JSX) */
+.top-logo {
+  height: var(--logo-height);
+  max-height: var(--logo-height);
+  width: auto;
+  object-fit: contain;
+}
+
+/* Backwards-compatible button classes used in older components */
+.btn-fluff {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(90deg, var(--accent), var(--brand));
+  color: var(--text-light);
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.btn-outline-fluff {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.9rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(107,46,166,0.12);
+  color: var(--brand);
+  background: transparent;
+}
+
+/* Some legacy components use Tailwind utility classes; map the common combos to brand styles */
+.rounded-full.bg-zinc-900 {
+  background: var(--brand) !important;
+  color: var(--text-light) !important;
+}
+.rounded-full.border.border-zinc-900 {
+  border-color: rgba(107,46,166,0.12) !important;
+  color: var(--brand) !important;
+  background: transparent !important;
+}
+
+/* Small button size helper */
+.btn-sm {
+  padding: 0.35rem 0.6rem !important;
+  font-size: 0.875rem !important;
+}
+
+.fluff-dashboard-shell {
+  display: grid;
+  grid-template-columns: 270px minmax(0, 1fr);
+  min-height: 100vh;
+  width: 100%;
+  background: #ececf1;
+}
+
+.fluff-sidebar {
+  background: linear-gradient(180deg, #6B2EA6 0%, #542184 100%);
+  color: var(--text-light);
+  padding: 1.1rem 0.75rem 1.25rem;
+}
+
+.fluff-sidebar-brand {
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0.3rem 0.5rem;
+}
+
+.fluff-live-card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 0.8rem;
+  margin: 0.85rem 0.25rem 1rem;
+}
+
+.fluff-live-pill {
+  font-size: 0.68rem;
+  font-weight: 700;
+  opacity: 0.92;
+}
+
+.fluff-live-title {
+  margin-top: 0.25rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.fluff-live-ready {
+  margin-top: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.16rem 0.56rem;
+  border-radius: 999px;
+  background: rgba(0, 255, 133, 0.15);
+  color: #9ff8c9;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.fluff-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+  margin-top: 0.45rem;
+}
+
+.fluff-nav-item {
+  color: rgba(255, 255, 255, 0.84);
+  text-decoration: none;
+  padding: 0.56rem 0.65rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.fluff-nav-item:hover {
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.fluff-nav-item.active {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--brand) 72%, #25d6df 28%), color-mix(in srgb, var(--accent) 50%, #25d6df 50%));
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.fluff-dashboard-main {
+  padding: 1rem;
+}
+
+.fluff-topbar {
+  border-radius: 10px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--brand) 35%, #50dbf1 65%), color-mix(in srgb, var(--accent) 20%, #50dbf1 80%));
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 0.9rem;
+}
+
+.fluff-topbar-tag {
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.fluff-topbar-user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.fluff-topbar-name {
+  color: rgba(255, 255, 255, 0.96);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.fluff-topbar-logout {
+  border: none;
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8rem;
+  background: rgba(255, 255, 255, 0.24);
+  color: #fff;
+  cursor: pointer;
+}
+
+.fluff-content {
+  margin-top: 1rem;
+}
+
+.fluff-page-title {
+  font-family: var(--font-body);
+  font-size: clamp(1.8rem, 2.5vw, 2.2rem);
+  font-weight: 800;
+  margin: 0 0 0.7rem;
+  color: #2c2f3f;
+}
+
+.fluff-breadcrumbs {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  padding: 0.5rem 0.72rem;
+  font-size: 0.85rem;
+  color: #5d6073;
+}
+
+.fluff-breadcrumbs .active {
+  color: #1a1f31;
+  font-weight: 700;
+}
+
+.fluff-banner {
+  margin-top: 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--brand) 30%, #9ef0f8 70%);
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  padding: 0.7rem 0.85rem;
+  color: #343a55;
+  font-size: 0.86rem;
+}
+
+.fluff-metadata-editor {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.fluff-metadata-editor-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
+.fluff-metadata-editor-head strong {
+  color: #2b3044;
+  font-size: 0.98rem;
+}
+
+.fluff-metadata-editor-head span {
+  font-size: 0.78rem;
+  color: #666c83;
+}
+
+.fluff-metadata-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.62rem;
+}
+
+.fluff-metadata-grid label {
+  display: grid;
+  gap: 0.28rem;
+}
+
+.fluff-metadata-grid label span {
+  font-size: 0.8rem;
+  color: #5f657d;
+  font-weight: 600;
+}
+
+.fluff-metadata-grid input {
+  border: 1px solid rgba(28, 29, 34, 0.2);
+  border-radius: 8px;
+  min-height: 36px;
+  padding: 0.45rem 0.62rem;
+  background: #fff;
+  color: #353a4d;
+}
+
+.fluff-metadata-tags-field {
+  grid-column: 1 / -1;
+}
+
+.fluff-metadata-tags-field small {
+  font-size: 0.74rem;
+  color: #747b93;
+}
+
+.fluff-metadata-preview {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.fluff-metadata-preview > span {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #5f657d;
+}
+
+.fluff-metadata-preview-tags {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.fluff-metadata-empty {
+  font-size: 0.8rem;
+  color: #8a90a5;
+}
+
+.fluff-metadata-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
+.fluff-metadata-actions button {
+  border-radius: 8px;
+  border: 1px solid rgba(28, 29, 34, 0.2);
+  min-height: 34px;
+  padding: 0 0.78rem;
+  background: #fff;
+  color: #2e3348;
+  cursor: pointer;
+}
+
+.fluff-metadata-actions button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.fluff-card-grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.fluff-action-card {
+  background: #fff;
+  border: 1px solid rgba(28, 29, 34, 0.08);
+  border-radius: 10px;
+  padding: 1rem;
+  min-height: 188px;
+  display: flex;
+  flex-direction: column;
+}
+
+.fluff-action-card h3 {
+  margin: 0;
+  font-family: var(--font-body);
+  color: #373c4d;
+  font-size: 1.08rem;
+  font-weight: 700;
+}
+
+.fluff-action-card p {
+  margin: 0.75rem 0 0;
+  color: #6e7285;
+  font-size: 0.98rem;
+  line-height: 1.42;
+}
+
+.fluff-action-card button {
+  margin-top: auto;
+  margin-left: auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: none;
+  background: color-mix(in srgb, var(--brand) 45%, #2ad8e8 55%);
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.fluff-action-card button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.fluff-table-panel {
+  margin-top: 1rem;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid rgba(28, 29, 34, 0.08);
+  padding: 1rem;
+}
+
+.fluff-stream-grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.fluff-stream-panel {
+  border-radius: 10px;
+  border: 1px solid rgba(28, 29, 34, 0.08);
+  background: #fff;
+  padding: 1rem;
+}
+
+.fluff-stream-main {
+  grid-column: span 2;
+}
+
+.fluff-stream-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.7rem;
+  align-items: center;
+}
+
+.fluff-stream-head h2 {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #353b50;
+}
+
+.fluff-live-state {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.fluff-live-state.on {
+  background: rgba(0, 255, 133, 0.2);
+  color: #027a46;
+}
+
+.fluff-live-state.off {
+  background: rgba(170, 28, 45, 0.15);
+  color: #8d2130;
+}
+
+.fluff-stream-controls {
+  margin-top: 0.8rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.fluff-stream-controls button {
+  border-radius: 8px;
+  border: 1px solid rgba(28, 29, 34, 0.18);
+  background: #fff;
+  min-height: 32px;
+  padding: 0 0.7rem;
+  font-size: 0.84rem;
+  cursor: pointer;
+}
+
+.fluff-stream-controls button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.fluff-now-playing {
+  margin-top: 0.95rem;
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.fluff-now-playing .cover {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: #fff;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--brand) 60%, #2ad8e8 40%), color-mix(in srgb, var(--accent) 60%, #2ad8e8 40%));
+}
+
+.fluff-now-playing .title {
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: #2f3447;
+}
+
+.fluff-now-playing .artist,
+.fluff-now-playing .meta {
+  margin-top: 0.24rem;
+  font-size: 0.82rem;
+  color: #666b7f;
+}
+
+.fluff-stream-panel.metric {
+  text-align: center;
+}
+
+.fluff-stream-panel.metric h3 {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: #3f445a;
+}
+
+.fluff-stream-panel.metric .value {
+  margin-top: 0.75rem;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #2b3042;
+}
+
+.fluff-stream-panel.metric p {
+  margin: 0.45rem 0 0;
+  color: #7a7f93;
+  font-size: 0.8rem;
+}
+
+.fluff-stream-panel h3 {
+  margin: 0;
+  font-family: var(--font-body);
+  color: #40465c;
+  font-size: 1.02rem;
+  font-weight: 700;
+}
+
+.fluff-recent-list,
+.fluff-country-list {
+  margin: 0.7rem 0 0;
+  padding-left: 1rem;
+  display: grid;
+  gap: 0.45rem;
+  color: #60657b;
+  font-size: 0.87rem;
+}
+
+.fluff-country-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.fluff-country-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.32rem 0.48rem;
+  border-radius: 7px;
+  background: #f7f8fc;
+}
+
+.fluff-mini-chart {
+  margin-top: 0.8rem;
+  min-height: 150px;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  align-items: end;
+  gap: 0.26rem;
+}
+
+.fluff-mini-chart span {
+  display: block;
+  border-radius: 6px 6px 0 0;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 40%, #3acde2 60%), color-mix(in srgb, var(--accent) 20%, #3acde2 80%));
+}
+
+.fluff-table-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.7rem;
+  align-items: flex-start;
+}
+
+.fluff-table-head h2 {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.45rem;
+  color: #3a3f52;
+  font-weight: 800;
+}
+
+.fluff-table-controls {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(140px, 1fr));
+  gap: 0.5rem;
+}
+
+.fluff-table-controls input,
+.fluff-table-controls select {
+  border: 1px solid rgba(28, 29, 34, 0.2);
+  border-radius: 8px;
+  min-height: 38px;
+  padding: 0.42rem 0.62rem;
+  background: #fff;
+  font-size: 0.89rem;
+}
+
+.fluff-table-wrapper {
+  margin-top: 1rem;
+  overflow: auto;
+}
+
+.fluff-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 860px;
+}
+
+.fluff-table th,
+.fluff-table td {
+  border-bottom: 1px solid rgba(28, 29, 34, 0.08);
+  text-align: left;
+  padding: 0.85rem 0.7rem;
+  color: #42475b;
+  font-size: 0.94rem;
+}
+
+.fluff-table th {
+  color: #60657b;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.fluff-tag,
+.fluff-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 0.18rem 0.62rem;
+  color: #fff;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--brand) 55%, #29d6e8 45%), color-mix(in srgb, var(--accent) 45%, #29d6e8 55%));
+}
+
+.fluff-switch {
+  width: 36px;
+  height: 22px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(60, 63, 80, 0.26);
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  cursor: pointer;
+}
+
+.fluff-switch span {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: #fff;
+  transform: translateX(0);
+  transition: transform 160ms ease;
+}
+
+.fluff-switch.on {
+  background: color-mix(in srgb, var(--brand) 45%, #31d6e5 55%);
+}
+
+.fluff-switch.on span {
+  transform: translateX(14px);
+}
+
+.fluff-actions {
+  display: inline-flex;
+  gap: 0.35rem;
+}
+
+.fluff-actions button {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  border: 1px solid rgba(28, 29, 34, 0.16);
+  background: #fff;
+  cursor: pointer;
+}
+
+.fluff-pagination-controls {
+  margin-top: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.fluff-pagination-size {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #5f657d;
+  font-size: 0.86rem;
+}
+
+.fluff-pagination-size select {
+  border: 1px solid rgba(28, 29, 34, 0.18);
+  border-radius: 8px;
+  min-height: 32px;
+  padding: 0.25rem 0.55rem;
+  background: #fff;
+}
+
+.fluff-pagination-meta {
+  color: #6b7188;
+  font-size: 0.82rem;
+}
+
+.fluff-pagination-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.fluff-pagination-actions button {
+  border-radius: 8px;
+  border: 1px solid rgba(28, 29, 34, 0.18);
+  min-height: 32px;
+  padding: 0 0.72rem;
+  background: #fff;
+  color: #2e3348;
+  cursor: pointer;
+}
+
+.fluff-pagination-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 1240px) {
+  .fluff-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .fluff-stream-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .fluff-stream-main {
+    grid-column: span 2;
+  }
+
+  .fluff-table-head {
+    flex-direction: column;
+  }
+
+  .fluff-table-controls {
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 980px) {
+  .fluff-dashboard-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .fluff-sidebar {
+    display: none;
+  }
+
+  .fluff-dashboard-main {
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .fluff-card-grid,
+  .fluff-table-controls,
+  .fluff-stream-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .fluff-metadata-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .fluff-stream-main {
+    grid-column: span 1;
+  }
+}
+
+/* ======================== PLAYLIST MANAGER ======================== */
+
+.fluff-playlist-manager {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 1.5rem;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.fluff-playlist-sidebar {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid rgba(28, 29, 34, 0.12);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.fluff-playlist-sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.2rem;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--brand) 60%, #2ad8e8 40%), color-mix(in srgb, var(--accent) 60%, #2ad8e8 40%));
+  border-bottom: 1px solid rgba(28, 29, 34, 0.1);
+}
+
+.fluff-playlist-sidebar-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.fluff-btn-create {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.fluff-btn-create:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.fluff-playlist-create-form {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(28, 29, 34, 0.08);
+  background: #f8f9fb;
+}
+
+.fluff-playlist-create-form .fluff-input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid rgba(28, 29, 34, 0.15);
+  font-size: 0.9rem;
+  margin-bottom: 0.7rem;
+}
+
+.fluff-form-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.fluff-btn-primary,
+.fluff-btn-secondary {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.fluff-btn-primary {
+  background: var(--brand);
+  color: #fff;
+  border: none;
+}
+
+.fluff-btn-primary:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.fluff-btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.fluff-btn-secondary {
+  background: #fff;
+  color: #4a5063;
+  border: 1px solid rgba(28, 29, 34, 0.18);
+}
+
+.fluff-btn-secondary:hover {
+  background: #f5f6f8;
+}
+
+.fluff-playlist-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
+.fluff-playlist-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 0.3rem;
+}
+
+.fluff-playlist-item:hover {
+  background: #f5f6f8;
+}
+
+.fluff-playlist-item.active {
+  background: linear-gradient(135deg, rgba(24, 150, 224, 0.1), rgba(42, 216, 232, 0.1));
+  border-left: 3px solid var(--brand);
+}
+
+.fluff-playlist-icon {
+  font-size: 1.5rem;
+}
+
+.fluff-playlist-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.fluff-playlist-name {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #2f3447;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fluff-playlist-meta {
+  font-size: 0.78rem;
+  color: #7e8396;
+  margin-top: 0.15rem;
+}
+
+.fluff-btn-delete {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(170, 28, 45, 0.1);
+  border: none;
+  color: #aa1c2d;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s;
+}
+
+.fluff-playlist-item:hover .fluff-btn-delete {
+  opacity: 1;
+}
+
+.fluff-btn-delete:hover {
+  background: rgba(170, 28, 45, 0.2);
+}
+
+.fluff-playlist-content {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid rgba(28, 29, 34, 0.12);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.fluff-playlist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 1.5rem;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--brand) 60%, #2ad8e8 40%), color-mix(in srgb, var(--accent) 60%, #2ad8e8 40%));
+  border-bottom: 1px solid rgba(28, 29, 34, 0.1);
+}
+
+.fluff-playlist-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.fluff-btn-save {
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.fluff-btn-save:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.fluff-btn-save:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.fluff-playlist-tabs {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  background: #f8f9fb;
+  border-bottom: 1px solid rgba(28, 29, 34, 0.08);
+}
+
+.fluff-tab {
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  color: #666b7f;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.fluff-tab:hover {
+  background: rgba(24, 150, 224, 0.08);
+  color: var(--brand);
+}
+
+.fluff-tab.active {
+  background: var(--brand);
+  color: #fff;
+}
+
+.fluff-playlist-search {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(28, 29, 34, 0.08);
+}
+
+.fluff-playlist-search label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  color: #4a5063;
+  cursor: pointer;
+}
+
+.fluff-search-input {
+  flex: 1;
+  padding: 0.6rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid rgba(28, 29, 34, 0.15);
+  font-size: 0.88rem;
+}
+
+.fluff-playlist-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 350px;
+  gap: 1px;
+  flex: 1;
+  overflow: hidden;
+  background: rgba(28, 29, 34, 0.08);
+}
+
+.fluff-available-tracks,
+.fluff-playlist-tracks {
+  background: #fff;
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.fluff-available-tracks h3,
+.fluff-playlist-tracks h3 {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  color: #3f445a;
+  font-weight: 700;
+}
+
+.fluff-track-list,
+.fluff-track-list-drag {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.fluff-track-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem;
+  border-radius: 8px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.fluff-track-row:hover {
+  background: #f5f6f8;
+}
+
+.fluff-track-row.selected {
+  background: linear-gradient(135deg, rgba(24, 150, 224, 0.12), rgba(42, 216, 232, 0.12));
+  border-left: 3px solid var(--brand);
+}
+
+.fluff-track-row input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.fluff-track-thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--brand) 40%, #ddd), color-mix(in srgb, var(--accent) 40%, #ddd));
+  flex-shrink: 0;
+}
+
+.fluff-track-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.fluff-track-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #2f3447;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fluff-track-artist {
+  font-size: 0.8rem;
+  color: #7e8396;
+  margin-top: 0.15rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fluff-track-duration {
+  font-size: 0.85rem;
+  color: #666b7f;
+  font-variant-numeric: tabular-nums;
+}
+
+.fluff-btn-add,
+.fluff-btn-remove {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.2s;
+}
+
+.fluff-btn-add {
+  background: rgba(0, 195, 123, 0.15);
+  color: #00c37b;
+}
+
+.fluff-btn-add:hover {
+  background: rgba(0, 195, 123, 0.25);
+}
+
+.fluff-btn-remove {
+  background: rgba(170, 28, 45, 0.15);
+  color: #aa1c2d;
+}
+
+.fluff-btn-remove:hover {
+  background: rgba(170, 28, 45, 0.25);
+}
+
+.fluff-track-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem;
+  border-radius: 8px;
+  background: #fff;
+  transition: all 0.2s;
+  cursor: move;
+}
+
+.fluff-track-item:hover {
+  background: #f8f9fb;
+}
+
+.fluff-track-item.dragging {
+  opacity: 0.5;
+  border: 2px dashed var(--brand);
+}
+
+.fluff-track-handle {
+  color: #bbb;
+  font-size: 1.1rem;
+  cursor: grab;
+}
+
+.fluff-track-handle:active {
+  cursor: grabbing;
+}
+
+.fluff-track-order {
+  width: 1.9rem;
+  text-align: right;
+  font-size: 0.82rem;
+  color: #7d849c;
+  font-variant-numeric: tabular-nums;
+}
+
+.fluff-track-position-input {
+  width: 4.2rem;
+  min-height: 30px;
+  border: 1px solid rgba(28, 29, 34, 0.18);
+  border-radius: 8px;
+  padding: 0.2rem 0.45rem;
+  font-size: 0.83rem;
+  color: #3e4357;
+  background: #fff;
+}
+
+.fluff-empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #7e8396;
+  font-size: 1rem;
+}
+
+@media (max-width: 1240px) {
+  .fluff-playlist-manager {
+    grid-template-columns: 240px minmax(0, 1fr);
+  }
+
+  .fluff-playlist-columns {
+    grid-template-columns: minmax(0, 1fr) 300px;
+  }
+}
+
+@media (max-width: 980px) {
+  .fluff-playlist-manager {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .fluff-playlist-sidebar {
+    max-height: 300px;
+  }
+
+  .fluff-playlist-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .fluff-playlist-tracks {
+    min-height: 400px;
+  }
+}
+
+@media (max-width: 640px) {
+  .fluff-pagination-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .fluff-pagination-actions {
+    justify-content: space-between;
+  }
+}
+
+/* Error banner */
+.fluff-error-banner {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  background: linear-gradient(135deg, #ff5252, #ff1744);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(255, 23, 68, 0.3);
+  cursor: pointer;
+  animation: slideDown 0.3s ease-out;
+  max-width: 90%;
+  font-weight: 500;
+}
+
+.fluff-error-banner:hover {
+  box-shadow: 0 8px 32px rgba(255, 23, 68, 0.4);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Add selected button */
+.fluff-btn-add-selected {
+  padding: 0.6rem 1.2rem;
+  background: linear-gradient(135deg, var(--brand), color-mix(in srgb, var(--brand) 80%, var(--accent)));
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.fluff-btn-add-selected:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.fluff-btn-add-selected:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(107, 46, 166, 0.3);
+}
+/* Dashboard Layout */
+.fluff-dashboard-shell {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+.fluff-sidebar {
+  background: linear-gradient(180deg, #6B2EA6 0%, #542184 100%);
+  color: #fff;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.fluff-sidebar-logo {
+  padding: 1.5rem 1.2rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.fluff-sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.fluff-sidebar-link {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: all 0.2s;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fluff-sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.fluff-sidebar-link.active {
+  background: linear-gradient(135deg, var(--brand), color-mix(in srgb, var(--brand) 80%, var(--accent)));
+  color: #fff;
+  font-weight: 600;
+}
+
+.fluff-main-content {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #f8f9fb;
+}
+
+.fluff-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(90deg, rgba(243, 231, 203, 0.5) 0%, rgba(255, 250, 240, 0.5) 100%);
+  border-bottom: 1px solid rgba(28, 29, 34, 0.08);
+  flex-shrink: 0;
+}
+
+.fluff-breadcrumbs {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.fluff-breadcrumbs a {
+  color: var(--brand);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.fluff-breadcrumbs a:hover {
+  text-decoration: underline;
+}
+
+.fluff-breadcrumbs span {
+  color: #999;
+}
+
+.fluff-topbar-user {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.fluff-topbar-user span {
+  font-size: 0.9rem;
+  color: #666b7f;
+}
+
+.fluff-btn-logout {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  background: #ff5252;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.fluff-btn-logout:hover {
+  background: #ff1744;
+  box-shadow: 0 2px 8px rgba(255, 23, 68, 0.2);
+}
+
+.fluff-page-content {
+  flex: 1;
+  overflow: auto;
+  padding: 1.5rem;
+}
+
+/* ======================== BRAND POLISH ======================== */
+
+.fluff-landing {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--bg-cream) 88%, white 12%) 0%, var(--bg-cream) 100%);
+}
+
+.fluff-landing::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 15% 0%, color-mix(in srgb, var(--brand) 18%, transparent 82%), transparent 36%),
+    radial-gradient(circle at 100% 10%, color-mix(in srgb, var(--accent) 18%, transparent 82%), transparent 40%);
+}
+
+.fluff-landing-hero h1 {
+  color: color-mix(in srgb, var(--brand) 70%, #1f2937 30%);
+}
+
+.fluff-landing-hero p {
+  color: color-mix(in srgb, var(--text-dark) 78%, #4b5563 22%);
+}
+
+.fluff-landing-note {
+  color: color-mix(in srgb, var(--text-dark) 70%, #6b7280 30%);
+}
+
+.fluff-landing-card {
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid color-mix(in srgb, var(--brand) 16%, transparent 84%);
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12);
+  backdrop-filter: blur(6px);
+}
+
+.fluff-login-shell {
+  background:
+    radial-gradient(circle at 10% 10%, color-mix(in srgb, var(--brand) 14%, transparent 86%), transparent 36%),
+    radial-gradient(circle at 90% 0%, color-mix(in srgb, var(--accent) 14%, transparent 86%), transparent 34%),
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-cream) 74%, white 26%), var(--bg-cream));
+}
+
+.fluff-login-panel {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid color-mix(in srgb, var(--brand) 14%, transparent 86%);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.14);
+}
+
+.fluff-login-panel h1 {
+  color: color-mix(in srgb, var(--brand) 72%, #1f2937 28%);
+}
+
+.fluff-login-subtext {
+  color: color-mix(in srgb, var(--text-dark) 74%, #6b7280 26%);
+}
+
+.btn-fluff {
+  background: linear-gradient(90deg, var(--accent), var(--brand));
+  box-shadow: 0 10px 26px color-mix(in srgb, var(--brand) 24%, transparent 76%);
+}
+
+.btn-fluff:hover {
+  filter: brightness(1.03);
+  transform: translateY(-1px);
+}
+
+.btn-outline-fluff {
+  background: rgba(255, 255, 255, 0.72);
+  border-color: color-mix(in srgb, var(--brand) 26%, transparent 74%);
+}
+
+/* Sidebar polish: conserve la charte FluffRadio avec plus de contraste et de structure */
+.fluff-sidebar {
+  background:
+    radial-gradient(circle at 15% 0%, color-mix(in srgb, var(--accent) 10%, transparent 90%), transparent 40%),
+    linear-gradient(180deg, color-mix(in srgb, var(--brand) 92%, #3f1c63 8%) 0%, color-mix(in srgb, var(--brand) 78%, #1f1234 22%) 100%);
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.1), 8px 0 24px rgba(15, 10, 30, 0.18);
+}
+
+.fluff-sidebar-brand {
+  min-height: 62px;
+  margin: 0.25rem 0.25rem 0.7rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: 12px;
+  background: color-mix(in srgb, #ffffff 12%, transparent 88%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.fluff-live-card {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: linear-gradient(180deg, color-mix(in srgb, #ffffff 12%, transparent 88%), color-mix(in srgb, #ffffff 4%, transparent 96%));
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.fluff-live-pill {
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.88;
+}
+
+.fluff-live-ready {
+  background: color-mix(in srgb, var(--live) 22%, transparent 78%);
+  color: #c6ffe4;
+  border: 1px solid color-mix(in srgb, var(--live) 45%, transparent 55%);
+}
+
+.fluff-nav {
+  gap: 0.38rem;
+  margin-top: 0.65rem;
+}
+
+.fluff-nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 0.58rem 0.72rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.94);
+  font-weight: 500;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.12);
+  transition: background-color 150ms ease, border-color 150ms ease, transform 120ms ease, box-shadow 150ms ease;
+}
+
+.fluff-nav-item:hover {
+  background: color-mix(in srgb, #ffffff 15%, transparent 85%);
+  border-color: rgba(255, 255, 255, 0.28);
+  transform: translateX(1px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.fluff-nav-item.active {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 42%, var(--brand) 58%), color-mix(in srgb, var(--brand) 78%, #ffffff 22%));
+  border-color: rgba(255, 255, 255, 0.44);
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 10px 20px color-mix(in srgb, var(--brand) 34%, transparent 66%), inset 0 1px 0 rgba(255, 255, 255, 0.26);
+}
+
+.fluff-nav-item.active::before {
+  content: "";
+  position: absolute;
+  left: -0.45rem;
+  top: 50%;
+  width: 0.26rem;
+  height: 58%;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background: color-mix(in srgb, #ffffff 85%, var(--accent) 15%);
+}
+
+.fluff-nav-item:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.58);
+  outline-offset: 2px;
+}
+
+/* Dashboard frame + topbar readability fixes */
+.fluff-dashboard-shell {
+  padding: 0.7rem;
+  gap: 0.7rem;
+  background: color-mix(in srgb, var(--bg-cream) 90%, #ffffff 10%);
+}
+
+.fluff-sidebar {
+  border-radius: 18px;
+  overflow: hidden;
+  padding: 1rem 0.75rem 1.1rem;
+}
+
+.fluff-dashboard-main {
+  padding: 0.15rem 0.25rem 0.5rem;
+}
+
+.fluff-topbar {
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid color-mix(in srgb, var(--brand) 12%, transparent 88%);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+  backdrop-filter: blur(5px);
+}
+
+.fluff-topbar-tag,
+.fluff-topbar-name {
+  color: color-mix(in srgb, var(--brand) 62%, #1f2937 38%);
+  text-shadow: none;
+}
+
+.fluff-topbar-logout {
+  background: color-mix(in srgb, var(--brand) 14%, #ffffff 86%);
+  color: color-mix(in srgb, var(--brand) 70%, #1f2937 30%);
+  border: 1px solid color-mix(in srgb, var(--brand) 20%, transparent 80%);
+}
+
+.fluff-topbar-logout:hover {
+  background: color-mix(in srgb, var(--brand) 20%, #ffffff 80%);
+}
+
+@media (max-width: 980px) {
+  .fluff-dashboard-shell {
+    padding: 0.4rem;
+    gap: 0.4rem;
+  }
+}

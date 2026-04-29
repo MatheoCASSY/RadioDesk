@@ -1,0 +1,33 @@
+import type { Metadata } from "next";
+import "./globals.css";
+import AuthProviderClient from "@/components/AuthProviderClient";
+import Header from "@/components/Header";
+import { Rubik, Bayon } from 'next/font/google';
+
+const rubik = Rubik({ subsets: ['latin'], variable: '--font-rubik' });
+const bayon = Bayon({ subsets: ['latin'], variable: '--font-bayon', weight: '400' });
+
+export const metadata: Metadata = {
+  title: "Fluff Radio - Dashboard",
+  description: "Admin panel for Fluff Radio",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="fr" className={`${rubik.variable} ${bayon.variable}`}>
+      <body className="antialiased">
+        <AuthProviderClient>
+          <Header />
+          {/* Make the main area full width so pages can use the entire viewport */}
+          <main className="w-full px-4 py-6">
+            {children}
+          </main>
+        </AuthProviderClient>
+      </body>
+    </html>
+  );
+}
